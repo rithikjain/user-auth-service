@@ -1,0 +1,11 @@
+# Enviorment variables
+.env
+
+# Node modules
+node_modules
+
+# Transpiled js files
+dist
+
+# VsCode Files
+.vscode

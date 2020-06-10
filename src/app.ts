@@ -1,6 +1,8 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 
+import userRoutes from './modules/user/routes'
+
 // import logger from './middleware/winston'
 
 const app = express()
@@ -14,7 +16,9 @@ app.use(
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
-	res.send("Hello There!!")
+	res.send('Yepp its up...')
 })
+
+app.use('/user', userRoutes)
 
 export default app

@@ -2,13 +2,13 @@ import express, { Response, Request } from 'express'
 
 import UserOperations from './controller'
 
-import { controllerResponse, signupParams } from './interface'
+import { controllerResponse } from './interface'
 
 
 const router = express.Router()
 
-router.post('/signup', async({ body }, res: Response) => {
-    const response: controllerResponse = await UserOperations.echoUser(body as signupParams)
+router.post('/signup', async ({ body }, res: Response) => {
+    const response: controllerResponse = await UserOperations.echoUser(body)
 
     res.status(response.code).json({
         error: response.error,

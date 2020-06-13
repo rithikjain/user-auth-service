@@ -3,6 +3,7 @@ import { db } from '../database/mongodb'
 import logger from '../../middleware/winston'
 import Result from "../utils/result"
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 class UserOperations {
     static async signUpUser(user: signupParams): Promise<controllerResponse> {
@@ -26,7 +27,10 @@ class UserOperations {
             await db.collection('users').insertOne(user)
             logger.info('New user created')
 
-            return Result.Success(201, 'User created', user)
+            const token = jwt.sign({userID: user._id}, process.env.JWT_SECRET as string)
+
+            const payload = {user: user, token: token}
+            return Result.Success(201, 'User created', payload)
 
         } catch (err) {
             logger.error('Error creating user')
@@ -45,7 +49,10 @@ class UserOperations {
             const tempUser = await db.collection('users').findOne({ email: user.email })
             if (tempUser != null) {
                 if (bcrypt.compareSync(user.password, tempUser.password)) {
-                    return Result.Success(200, "User signed in", null)
+                    const token = jwt.sign({userID: tempUser._id}, process.env.JWT_SECRET as string)
+
+                    const payload = {user: tempUser, token: token}
+                    return Result.Success(200, "User signed in", payload)
                 } else {
                     return Result.IncorrectCredentialsError()
                 }

@@ -11,7 +11,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
     try {
         const { userID } = <any>jwt.verify(token, process.env.JWT_SECRET as string)
-        res.locals.user = userID
+        res.locals.userID = userID
         return next()
     } catch (err) {
         return Result.Json(res, Result.ForbiddenError())

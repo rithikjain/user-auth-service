@@ -3,7 +3,6 @@ import { ObjectId } from 'bson'
 export interface signupParams {
     _id?: ObjectId
     timestamp: string
-    readonly username: string
     readonly fullname: string
     readonly email: string
     readonly password: string

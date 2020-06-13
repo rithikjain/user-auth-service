@@ -1,4 +1,4 @@
-import { signupParams, controllerResponse } from "./interface"
+import { signupParams, controllerResponse, signinParams } from "./interface"
 import { db } from '../database/mongodb'
 import logger from '../../middleware/winston'
 import Result from "../utils/result"
@@ -27,8 +27,33 @@ class UserOperations {
             logger.info('New user created')
 
             return Result.Success(201, 'User created', user)
+
         } catch (err) {
             logger.error('Error creating user')
+            return Result.DatabaseError()
+        }
+    }
+
+    static async signInUser(user: signinParams): Promise<controllerResponse> {
+        try {
+            // Validate email
+            if (!this.validateEmail(user.email)) {
+                return Result.EmailNotValidError()
+            }
+
+            const tempUser = await db.collection('users').findOne({ email: user.email })
+            if (tempUser != null) {
+                if (bcrypt.compareSync(user.password, tempUser.password)) {
+                    return Result.Success(200, "User signed in", null)
+                } else {
+                    return Result.IncorrectCredentialsError()
+                }
+            } else {
+                return Result.IncorrectCredentialsError()
+            }
+
+        } catch (err) {
+            logger.error('Error signing in user')
             return Result.DatabaseError()
         }
     }

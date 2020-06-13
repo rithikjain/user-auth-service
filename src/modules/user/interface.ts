@@ -8,6 +8,11 @@ export interface signupParams {
     password: string
 }
 
+export interface signinParams {
+    email: string
+    password: string
+}
+
 export interface controllerResponse {
     code: number
     error: boolean

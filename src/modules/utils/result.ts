@@ -20,6 +20,10 @@ class Result {
         }
     }
 
+    static DatabaseError() {
+        return this.Error(500, "Fatal database error")
+    }
+
     static EmailExistsError() {
         return this.Error(403, "User with this email exists")
     }
@@ -28,8 +32,8 @@ class Result {
         return this.Error(400, "Email address not valid")
     }
 
-    static DatabaseError() {
-        return this.Error(500, "Fatal database error")
+    static IncorrectCredentialsError() {
+        return this.Error(400, "Either email or password is incorrect")
     }
 
     static Json(res: Response, response: controllerResponse) {

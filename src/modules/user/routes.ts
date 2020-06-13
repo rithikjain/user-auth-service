@@ -13,4 +13,9 @@ router.post('/signup', async ({ body }, res: Response) => {
     Result.Json(res, response)
 })
 
+router.post('/signin', async({ body }, res: Response) => {
+    const response: controllerResponse = await UserOperations.signInUser(body)
+    Result.Json(res, response)
+})
+
 export default router

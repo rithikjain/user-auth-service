@@ -4,6 +4,7 @@ import logger from '../../middleware/winston'
 import Result from "../utils/result"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import {ObjectID} from "mongodb"
 
 class UserOperations {
     static async signUpUser(user: signupParams): Promise<controllerResponse> {
@@ -59,6 +60,19 @@ class UserOperations {
             } else {
                 return Result.IncorrectCredentialsError()
             }
+
+        } catch (err) {
+            logger.error('Error signing in user')
+            return Result.DatabaseError()
+        }
+    }
+    
+
+    // Protected request
+    static async viewDetails(userID: string): Promise<controllerResponse> {
+        try {
+            const user = await db.collection('users').findOne({ _id: ObjectID.createFromHexString(userID) })
+            return Result.Success(200, "User details fetched", user)
 
         } catch (err) {
             logger.error('Error signing in user')

@@ -1,7 +1,7 @@
 import { controllerResponse } from "../user/interface"
 import { Response } from 'express'
 
-class Respond {
+class Result {
     static Success(code: number, message: string, payload: any) {
         return {
             code: code,
@@ -29,4 +29,4 @@ class Respond {
     }
 }
 
-export default Respond
+export default Result

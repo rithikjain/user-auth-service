@@ -3,15 +3,14 @@ import express, { Response } from 'express'
 import UserOperations from './controller'
 
 import { controllerResponse, signupParams } from './interface'
-import Respond from '../utils/response'
+import Result from '../utils/result'
 
 
 const router = express.Router()
 
 router.post('/signup', async ({ body }, res: Response) => {
     const response: controllerResponse = await UserOperations.signUpUser(body)
-
-    Respond.Json(res, response)
+    Result.Json(res, response)
 })
 
 export default router

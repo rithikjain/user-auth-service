@@ -8,7 +8,7 @@ class UserOperations {
         try {
             // Validate email
             if (!this.validateEmail(user.email)) {
-                return Result.EmailExistsError()
+                return Result.EmailNotValidError()
             }
 
             // Check if email exists

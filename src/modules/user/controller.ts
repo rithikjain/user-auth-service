@@ -6,6 +6,11 @@ import Result from "../utils/result"
 class UserOperations {
     static async signUpUser(user: signupParams): Promise<controllerResponse> {
         try {
+            // Validate email
+            if (!this.validateEmail(user.email)) {
+                return Result.EmailExistsError()
+            }
+
             // Check if email exists
             const tempUser = await db.collection('users').findOne({ email: user.email })
             if (tempUser != null) {
@@ -23,9 +28,9 @@ class UserOperations {
         }
     }
 
-    validateEmail(email: string) {
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
+    private static validateEmail = (email: string): boolean => {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return re.test(email.toLowerCase())
     }
 }
 

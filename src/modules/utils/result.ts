@@ -11,7 +11,7 @@ class Result {
         }
     }
 
-    static Error(code: number, message: string) {
+    private static Error(code: number, message: string) {
         return {
             code: code,
             error: true,

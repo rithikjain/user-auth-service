@@ -1,8 +1,9 @@
-import express, { Response, Request } from 'express'
+import express, { Response } from 'express'
 
 import UserOperations from './controller'
 
-import { controllerResponse } from './interface'
+import { controllerResponse, signupParams } from './interface'
+import Respond from '../utils/response'
 
 
 const router = express.Router()
@@ -10,11 +11,7 @@ const router = express.Router()
 router.post('/signup', async ({ body }, res: Response) => {
     const response: controllerResponse = await UserOperations.echoUser(body)
 
-    res.status(response.code).json({
-        error: response.error,
-        message: response.message,
-        payload: response.payload,
-    })
+    Respond.Json(res, response)
 })
 
 export default router

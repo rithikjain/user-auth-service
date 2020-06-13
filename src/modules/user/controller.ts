@@ -1,12 +1,9 @@
-import { signupObject, controllerResponse } from "./interface";
-import RESPONSE from "../response/responses";
+import { signupParams, controllerResponse } from "./interface";
+import Respond from "../utils/response";
 
 class UserOperations {
-    static async echoUser({ user }: signupObject): Promise<controllerResponse> {
-        if (!user) {
-            return RESPONSE.INCOMPLETE_REQUEST()
-        }
-        return RESPONSE.SUCCESS_OPERATION(user)
+    static async echoUser(user: signupParams): Promise<controllerResponse> {
+        return Respond.Success(200, "User Echoed", user)
     }
 }
 

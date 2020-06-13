@@ -36,6 +36,14 @@ class Result {
         return this.Error(400, "Either email or password is incorrect")
     }
 
+    static UnAuthorizedError() {
+        return this.Error(401, "Unauthorized")
+    }
+
+    static ForbiddenError() {
+        return this.Error(403, "Forbidden")
+    }
+
     static Json(res: Response, response: controllerResponse) {
         res.status(response.code).json({
             error: response.error,

@@ -6,7 +6,7 @@ class Result {
         return {
             code: code,
             error: false,
-            message: message, 
+            message: message,
             payload: payload,
         }
     }
@@ -18,6 +18,18 @@ class Result {
             message: message,
             payload: null,
         }
+    }
+
+    static EmailExistsError() {
+        return this.Error(403, "User with this email exists")
+    }
+
+    static EmailNotValidError() {
+        return this.Error(400, "Email address not valid")
+    }
+
+    static DatabaseError() {
+        return this.Error(500, "Fatal database error")
     }
 
     static Json(res: Response, response: controllerResponse) {

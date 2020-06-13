@@ -1,9 +1,16 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 
+import logger from './middleware/winston'
+import { connectToDB } from './modules/database/mongodb'
+
+// Loading Routes
 import userRoutes from './modules/user/routes'
 
-// import logger from './middleware/winston'
+// Connect to DB
+connectToDB(() => {
+	logger.info("Connected to DB...")
+})
 
 const app = express()
 

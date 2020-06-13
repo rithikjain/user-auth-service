@@ -9,7 +9,7 @@ import Respond from '../utils/response'
 const router = express.Router()
 
 router.post('/signup', async ({ body }, res: Response) => {
-    const response: controllerResponse = await UserOperations.echoUser(body)
+    const response: controllerResponse = await UserOperations.signUpUser(body)
 
     Respond.Json(res, response)
 })

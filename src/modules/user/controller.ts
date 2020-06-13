@@ -41,6 +41,7 @@ class UserOperations {
                 return Result.EmailNotValidError()
             }
 
+            // Check password
             const tempUser = await db.collection('users').findOne({ email: user.email })
             if (tempUser != null) {
                 if (bcrypt.compareSync(user.password, tempUser.password)) {

@@ -3,9 +3,9 @@ import { ObjectId } from 'bson'
 export interface signupParams {
     _id?: ObjectId
     timestamp: string
-    readonly fullname: string
-    readonly email: string
-    readonly password: string
+    fullname: string
+    email: string
+    password: string
 }
 
 export interface controllerResponse {

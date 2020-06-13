@@ -2,6 +2,7 @@ import { signupParams, controllerResponse } from "./interface"
 import { db } from '../database/mongodb'
 import logger from '../../middleware/winston'
 import Result from "../utils/result"
+import bcrypt from 'bcrypt'
 
 class UserOperations {
     static async signUpUser(user: signupParams): Promise<controllerResponse> {
@@ -16,6 +17,10 @@ class UserOperations {
             if (tempUser != null) {
                 return Result.EmailExistsError()
             }
+
+            // Hashing password
+            const passHash = bcrypt.hashSync(user.password, 10)
+            user.password = passHash
 
             user.timestamp = Date()
             await db.collection('users').insertOne(user)

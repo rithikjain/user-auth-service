@@ -4,7 +4,7 @@ An user authentication service written in node with typescript and uses MongoDB 
 
 # ToDo
 - [x] Sign Up
-- [ ] Email Verification
+- [x] Email Verification
 - [ ] Resend Verfication Email
 - [ ] Password Reset
-- [ ] Sign In
+- [x] Sign In

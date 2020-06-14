@@ -29,10 +29,10 @@ class UserOperations {
             await db.collection('users').insertOne(user)
             logger.info('New user created')
 
-            const token = jwt.sign({userID: user._id}, process.env.JWT_SECRET as string)
+            const emailToken = jwt.sign({ userID: user._id }, process.env.EMAIL_JWT_SECRET as string)
+            const url = `http://localhost:3000/verify/${emailToken}`
 
-            const payload = {user: user, token: token}
-            return Result.Success(201, 'User created', payload)
+            return Result.Success(201, 'User created', 'Verification email sent')
 
         } catch (err) {
             logger.error('Error creating user')

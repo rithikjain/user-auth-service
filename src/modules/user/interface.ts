@@ -1,11 +1,12 @@
 import { ObjectId } from 'bson'
 
-export interface signupParams {
+export interface userParams {
     _id?: ObjectId
     timestamp: string
     fullname: string
     email: string
     password: string
+    isVerified: boolean
 }
 
 export interface signinParams {

@@ -1,4 +1,4 @@
-import { signupParams, controllerResponse, signinParams } from "./interface"
+import { userParams, controllerResponse, signinParams } from "./interface"
 import { db } from '../database/mongodb'
 import logger from '../../middleware/winston'
 import Result from "../utils/result"
@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 import {ObjectID} from "mongodb"
 
 class UserOperations {
-    static async signUpUser(user: signupParams): Promise<controllerResponse> {
+    static async signUpUser(user: userParams): Promise<controllerResponse> {
         try {
             // Validate email
             if (!this.validateEmail(user.email)) {
@@ -24,6 +24,7 @@ class UserOperations {
             const passHash = bcrypt.hashSync(user.password, 10)
             user.password = passHash
 
+            user.isVerified = false
             user.timestamp = Date()
             await db.collection('users').insertOne(user)
             logger.info('New user created')

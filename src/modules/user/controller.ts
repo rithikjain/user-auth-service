@@ -5,6 +5,7 @@ import Result from "../utils/result"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import {ObjectID} from "mongodb"
+import sgMail from '@sendgrid/mail'
 
 class UserOperations {
     static async signUpUser(user: userParams): Promise<controllerResponse> {
@@ -29,8 +30,21 @@ class UserOperations {
             await db.collection('users').insertOne(user)
             logger.info('New user created')
 
+            // Sending verification email
             const emailToken = jwt.sign({ userID: user._id }, process.env.EMAIL_JWT_SECRET as string)
             const url = `http://localhost:3000/verify/${emailToken}`
+            sgMail.setApiKey(process.env.SG_KEY as string)
+            const msg = {
+                to: user.email,
+                from: 'rithik.jain3006@gmail.com',
+                subject: 'Confirm Email',
+                html: `Please click on the following link to confirm your email: <a href="${url}">${url}</a>`,
+            }
+            try {
+                sgMail.send(msg)
+            } catch (err) {
+                logger.error(err)
+            }
 
             return Result.Success(201, 'User created', 'Verification email sent')
 

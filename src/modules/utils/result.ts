@@ -44,6 +44,10 @@ class Result {
         return this.Error(403, "Forbidden")
     }
 
+    static EmailNotVerifiedError() {
+        return this.Error(403, "Email not verified")
+    }
+
     static Json(res: Response, response: controllerResponse) {
         res.status(response.code).json({
             error: response.error,

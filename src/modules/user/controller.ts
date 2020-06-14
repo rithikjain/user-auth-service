@@ -65,10 +65,14 @@ class UserOperations {
             const tempUser = await db.collection('users').findOne({ email: user.email })
             if (tempUser != null) {
                 if (bcrypt.compareSync(user.password, tempUser.password)) {
-                    const token = jwt.sign({userID: tempUser._id}, process.env.JWT_SECRET as string)
+                    if (tempUser.isVerified) {
+                        const token = jwt.sign({userID: tempUser._id}, process.env.JWT_SECRET as string)
 
-                    const payload = {user: tempUser, token: token}
-                    return Result.Success(200, "User signed in", payload)
+                        const payload = {user: tempUser, token: token}
+                        return Result.Success(200, "User signed in", payload)
+                    } else {
+                        return Result.EmailNotVerifiedError()
+                    }
                 } else {
                     return Result.IncorrectCredentialsError()
                 }

@@ -32,7 +32,7 @@ class UserOperations {
 
             // Sending verification email
             const emailToken = jwt.sign({ userID: user._id }, process.env.EMAIL_JWT_SECRET as string)
-            const url = `http://localhost:3000/verify/${emailToken}`
+            const url = `http://localhost:3000/user/verify/${emailToken}`
             sgMail.setApiKey(process.env.SG_KEY as string)
             const msg = {
                 to: user.email,
@@ -85,8 +85,20 @@ class UserOperations {
             return Result.DatabaseError()
         }
     }
-    
 
+    static async verifyEmail(userID: string): Promise<boolean> {
+        try {
+            const query = { _id: ObjectID.createFromHexString(userID) }
+            const update = { $set: {isVerified: true} }
+            await db.collection('users').updateOne(query, update)
+            return true
+
+        } catch (err) {
+            logger.error('Error signing in user')
+            return false
+        }
+    }
+    
     // Protected request
     static async viewDetails(userID: string): Promise<controllerResponse> {
         try {
@@ -94,7 +106,7 @@ class UserOperations {
             return Result.Success(200, "User details fetched", user)
 
         } catch (err) {
-            logger.error('Error signing in user')
+            logger.error('Error')
             return Result.DatabaseError()
         }
     }
